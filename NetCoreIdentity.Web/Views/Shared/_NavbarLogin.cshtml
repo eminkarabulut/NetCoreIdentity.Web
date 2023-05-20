@@ -1,0 +1,29 @@
+﻿@using System.Security.Claims;
+@if (User.Identity!.IsAuthenticated)
+{
+    <ul class="navbar-nav me-0">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @User.Identity.Name
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" asp-action="Index" asp-controller="Member">Profil</a></li>
+                <li><a class="dropdown-item" asp-action="UserEdit" asp-controller="Member">Kullanıcı Güncelle</a></li>
+                @{
+                    if (User.HasClaim(x=>x.Value=="Admin" && x.Type==ClaimTypes.Role))
+                    {
+                        <li><a class="dropdown-item" asp-area="admin" asp-action="Index" asp-controller="Home">Admin</a></li>
+                    }
+                }
+                <li><a class="dropdown-item" asp-action="PasswordChange" asp-controller="Member">Şifre Değiştir</a></li>
+                <li><a class="dropdown-item" asp-action="Logout" asp-route-returnurl="/Home/Index" asp-controller="Member">Çıkış Yap</a></li>
+            </ul>
+        </li>
+    </ul>
+}
+
+else
+{
+    <a class="btn btn-outline-success mx-2" type="submit" asp-action="SignUp" asp-controller="Home">Üye Kayıt</a>
+    <a class="btn btn-outline-success" type="submit" asp-action="SignIn" asp-controller="Home">Üye Giriş</a>
+}
